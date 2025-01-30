@@ -39,6 +39,7 @@ class MainApp extends StatelessWidget {
         BlocProvider(create: (context) => TransactionBloc()),
       ],
       child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
           body: Home(),
         ),

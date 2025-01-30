@@ -75,101 +75,101 @@ class _InsertDataState extends State<InsertData> with RestorationMixin {
         );
       },
     );
-  }
-
-  
+  }  
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        TextButton(
-          onPressed: (){
-            _restorableDatePickerRouteFuture.present();
-          }, 
-          child: Text(DateFormat('dd/MM/yyyy').format(_selectedDate.value))
-        ),
-        Flexible(
-          child: CustomTextField(
-            hint: "Nombre",
-            onChanged: (p0) {
-              setState(() {
-                name = p0;
-              });
-            },
+    return Container(
+      color: Theme.of(context).highlightColor,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          TextButton(
+            onPressed: (){
+              _restorableDatePickerRouteFuture.present();
+            }, 
+            child: Text(DateFormat('dd/MM/yyyy').format(_selectedDate.value))
           ),
-        ),
-        Flexible(
-          child: CustomTextField(
-            hint: "Monto",
-            textInputType: TextInputType.numberWithOptions(decimal: true),
-            inputFormatters: [
-              FilteringTextInputFormatter.allow(RegExp('[0-9.,-]')),
-            ],
-            onChanged: (p0) {
-              setState(() {
-                monto = double.tryParse(p0 ?? "nan");
-              });
-            },
+          Flexible(
+            child: CustomTextField(
+              hint: "Nombre",
+              onChanged: (p0) {
+                setState(() {
+                  name = p0;
+                });
+              },
+            ),
           ),
-        ),
-        Flexible(
-          child: AccountsDropdown(
-            onSelected: (p0) {
-              setState(() {
-                idCuenta = p0?.idCuenta;
-              });
-            },
-          )
-        ),
-        Flexible(
-          child: ConceptsDropdown(
-            onSelected: (p0) {
-              setState(() {
-                idConcepto = p0?.idConcepto;
-              });
-            },
+          Flexible(
+            child: CustomTextField(
+              hint: "Monto",
+              textInputType: TextInputType.numberWithOptions(decimal: true),
+              inputFormatters: [
+                FilteringTextInputFormatter.allow(RegExp('[0-9.,-]')),
+              ],
+              onChanged: (p0) {
+                setState(() {
+                  monto = double.tryParse(p0 ?? "nan");
+                });
+              },
+            ),
           ),
-        ),
-        Flexible(
-          child: CustomTextField(
-            hint: "Descripción",
-            onChanged: (p0) {
-              setState(() {
-                descripcion = p0;
-              });
-            },
+          Flexible(
+            child: AccountsDropdown(
+              onSelected: (p0) {
+                setState(() {
+                  idCuenta = p0?.idCuenta;
+                });
+              },
+            )
           ),
-        ),
-        ElevatedButton(
-          onPressed: !isValid() ? null : (){
-            DateTime now = DateTime.now();
-            BlocProvider.of<TransactionBloc>(context).add(
-              NewTransaction(
-                transaccion: Transaccion(
-                  descripcion: descripcion, 
-                  fecha: DateTime(
-                    _selectedDate.value.year,
-                    _selectedDate.value.month,
-                    _selectedDate.value.day,
-                    now.hour,
-                    now.minute,
-                    now.second,
-                  ), 
-                  idConcepto: idConcepto!, 
-                  idCuenta: idCuenta!, 
-                  idTransaccion: null, 
-                  monto: monto!, 
-                  nombre: name!,
+          Flexible(
+            child: ConceptsDropdown(
+              onSelected: (p0) {
+                setState(() {
+                  idConcepto = p0?.idConcepto;
+                });
+              },
+            ),
+          ),
+          Flexible(
+            child: CustomTextField(
+              hint: "Descripción",
+              onChanged: (p0) {
+                setState(() {
+                  descripcion = p0;
+                });
+              },
+            ),
+          ),
+          ElevatedButton(
+            onPressed: !isValid() ? null : (){
+              DateTime now = DateTime.now();
+              BlocProvider.of<TransactionBloc>(context).add(
+                NewTransaction(
+                  transaccion: Transaccion(
+                    descripcion: descripcion, 
+                    fecha: DateTime(
+                      _selectedDate.value.year,
+                      _selectedDate.value.month,
+                      _selectedDate.value.day,
+                      now.hour,
+                      now.minute,
+                      now.second,
+                    ), 
+                    idConcepto: idConcepto!, 
+                    idCuenta: idCuenta!, 
+                    idTransaccion: null, 
+                    monto: monto!, 
+                    nombre: name!,
+                  )
                 )
-              )
-            );
-          }, 
-          child: Text("Agregar movimiento")
-        ),
-      ],
+              );
+            }, 
+            child: Text("Agregar movimiento")
+          ),
+        ],
+      ),
     );
   }
 

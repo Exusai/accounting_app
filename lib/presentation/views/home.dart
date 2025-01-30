@@ -1,6 +1,8 @@
 import 'package:accounting_app/domain/request_response/get_estado_de_cuentas_request.dart';
+import 'package:accounting_app/presentation/bloc/cuentas/cuentas_bloc.dart';
 import 'package:accounting_app/presentation/bloc/get_estado_de_cuenta/get_estado_de_cuenta_bloc.dart';
 import 'package:accounting_app/presentation/bloc/transaction/transaction_bloc.dart';
+import 'package:accounting_app/presentation/views/accounts_overview/accounts_overview.dart';
 import 'package:accounting_app/presentation/views/insert_data/insert_data.dart';
 import 'package:accounting_app/presentation/views/sheet/sheet.dart';
 import 'package:flutter/material.dart';
@@ -23,10 +25,31 @@ class Home extends StatelessWidget {
               )
             )
           );
+
+          BlocProvider.of<CuentasBloc>(context).getAccounts();
         }
       },
-      child: Column(
-        children: [Expanded(child: const Sheet()), InsertData()],
+      child: Row(
+        children: [
+          Expanded(
+            flex: 8,
+            child: Column(
+              children: [Expanded(child: const Sheet()), InsertData()],
+            ),
+          ),
+
+          Expanded(
+            flex: 2,
+            child: Padding(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  AccountsOverview(),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
