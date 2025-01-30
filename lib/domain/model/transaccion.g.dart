@@ -11,7 +11,7 @@ Transaccion _$TransaccionFromJson(Map<String, dynamic> json) => Transaccion(
       fecha: DateTime.parse(json['fecha'] as String),
       idConcepto: json['idConcepto'] as String,
       idCuenta: json['idCuenta'] as String,
-      idTransaccion: json['idTransaccion'] as String,
+      idTransaccion: json['idTransaccion'] as String?,
       monto: (json['monto'] as num).toDouble(),
       nombre: json['nombre'] as String,
     );

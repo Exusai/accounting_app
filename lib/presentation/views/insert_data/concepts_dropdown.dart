@@ -1,11 +1,11 @@
 import 'package:accounting_app/domain/model/concepto.dart';
-import 'package:accounting_app/domain/model/cuenta.dart';
 import 'package:accounting_app/presentation/bloc/conceptos/conceptos_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ConceptsDropdown extends StatefulWidget {
-  const ConceptsDropdown({super.key});
+  final void Function(Concepto?)? onSelected;
+  const ConceptsDropdown({super.key, this.onSelected});
 
   @override
   State<ConceptsDropdown> createState() => _ConceptsDropdownState();
@@ -34,6 +34,7 @@ class _ConceptsDropdownState extends State<ConceptsDropdown> {
               setState(() {
                 selectedConcepto = cons;
               });
+              widget.onSelected?.call(cons);
             },
           );
         }

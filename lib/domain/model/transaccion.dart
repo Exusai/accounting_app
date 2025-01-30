@@ -14,7 +14,7 @@ class Transaccion {
     required this.nombre,
   });
 
-  String idTransaccion;
+  String? idTransaccion; // is null on request, but shall not be null when data comes from db
   DateTime fecha;
   String nombre;
   double monto;

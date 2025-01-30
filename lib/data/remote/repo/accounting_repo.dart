@@ -1,3 +1,4 @@
+import 'package:accounting_app/domain/model/transaccion.dart';
 import 'package:accounting_app/domain/request_response/get_accounts_response.dart';
 import 'package:accounting_app/domain/request_response/get_concepts_response.dart';
 import 'package:accounting_app/domain/request_response/get_estado_de_cuentas_request.dart';
@@ -37,6 +38,18 @@ class AccountingRepo {
         'http://localhost:8080/getAccounts',
       );
       return GetAccountsResponse.fromJson(response.data);
+    } on Exception catch (e) {
+      print(e);
+      rethrow;
+    }
+  }
+
+  Future<void> addTransaction(Transaccion transaccion) async {
+    try {
+      var _ = await dio.post(
+        'http://localhost:8080/insertarMovimientoEstadoCuenta',
+        data: transaccion.toJson()
+      );
     } on Exception catch (e) {
       print(e);
       rethrow;

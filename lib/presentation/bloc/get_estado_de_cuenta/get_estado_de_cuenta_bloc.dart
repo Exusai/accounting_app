@@ -14,6 +14,7 @@ class GetEstadoDeCuentaBloc extends Bloc<GetEstadoDeCuentaEvent, GetEstadoDeCuen
     on<GetEstadoDeCuentaForDate>((event, emit) async  {
       try {
         emit(GetEstadoDeCuentaLoading());
+        await Future.delayed(Duration(milliseconds: 300));
         GetEstadoDeCuentasResponse getEstadoDeCuentasResponse = await getEstadoDeCuentaByDate.call(event.getEstadoDeCuentasRequest);
         emit(GetEstadoDeCuentaLoaded(
           getEstadoDeCuentasResponse: getEstadoDeCuentasResponse

@@ -2,6 +2,7 @@ import 'package:accounting_app/domain/request_response/get_estado_de_cuentas_req
 import 'package:accounting_app/presentation/bloc/conceptos/conceptos_bloc.dart';
 import 'package:accounting_app/presentation/bloc/cuentas/cuentas_bloc.dart';
 import 'package:accounting_app/presentation/bloc/get_estado_de_cuenta/get_estado_de_cuenta_bloc.dart';
+import 'package:accounting_app/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:accounting_app/presentation/views/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,6 +35,8 @@ class MainApp extends StatelessWidget {
         BlocProvider(create: (context) => ConceptosBloc()..add(
           GetConceptos()
         )),
+
+        BlocProvider(create: (context) => TransactionBloc()),
       ],
       child: const MaterialApp(
         home: Scaffold(

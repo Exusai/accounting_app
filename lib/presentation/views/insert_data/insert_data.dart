@@ -1,8 +1,11 @@
+import 'package:accounting_app/domain/model/transaccion.dart';
+import 'package:accounting_app/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:accounting_app/presentation/views/insert_data/accounts_dropdown.dart';
 import 'package:accounting_app/presentation/views/insert_data/concepts_dropdown.dart';
 import 'package:accounting_app/presentation/views/insert_data/custom_text_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class InsertData extends StatefulWidget {
@@ -15,6 +18,12 @@ class InsertData extends StatefulWidget {
 }
 
 class _InsertDataState extends State<InsertData> with RestorationMixin {
+  String? idCuenta;
+  String? idConcepto;
+  String? descripcion;
+  double? monto;
+  String? name;
+
   @override
   String? get restorationId => widget.restorationId;
   
@@ -85,6 +94,11 @@ class _InsertDataState extends State<InsertData> with RestorationMixin {
         Flexible(
           child: CustomTextField(
             hint: "Nombre",
+            onChanged: (p0) {
+              setState(() {
+                name = p0;
+              });
+            },
           ),
         ),
         Flexible(
@@ -94,20 +108,73 @@ class _InsertDataState extends State<InsertData> with RestorationMixin {
             inputFormatters: [
               FilteringTextInputFormatter.allow(RegExp('[0-9.,-]')),
             ],
+            onChanged: (p0) {
+              setState(() {
+                monto = double.tryParse(p0 ?? "nan");
+              });
+            },
           ),
         ),
         Flexible(
-          child: AccountsDropdown()
+          child: AccountsDropdown(
+            onSelected: (p0) {
+              setState(() {
+                idCuenta = p0?.idCuenta;
+              });
+            },
+          )
         ),
         Flexible(
-          child: ConceptsDropdown()
+          child: ConceptsDropdown(
+            onSelected: (p0) {
+              setState(() {
+                idConcepto = p0?.idConcepto;
+              });
+            },
+          ),
         ),
         Flexible(
           child: CustomTextField(
             hint: "Descripción",
+            onChanged: (p0) {
+              setState(() {
+                descripcion = p0;
+              });
+            },
           ),
+        ),
+        ElevatedButton(
+          onPressed: !isValid() ? null : (){
+            DateTime now = DateTime.now();
+            BlocProvider.of<TransactionBloc>(context).add(
+              NewTransaction(
+                transaccion: Transaccion(
+                  descripcion: descripcion, 
+                  fecha: DateTime(
+                    _selectedDate.value.year,
+                    _selectedDate.value.month,
+                    _selectedDate.value.day,
+                    now.hour,
+                    now.minute,
+                    now.second,
+                  ), 
+                  idConcepto: idConcepto!, 
+                  idCuenta: idCuenta!, 
+                  idTransaccion: null, 
+                  monto: monto!, 
+                  nombre: name!,
+                )
+              )
+            );
+          }, 
+          child: Text("Agregar movimiento")
         ),
       ],
     );
+  }
+
+  bool isValid(){
+    return name != null && monto != null
+      && idConcepto != null && idCuenta != null;
   }
 }

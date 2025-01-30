@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AccountsDropdown extends StatefulWidget {
-  const AccountsDropdown({super.key});
+  final void Function(Cuenta?)? onSelected;
+  const AccountsDropdown({super.key, this.onSelected});
 
   @override
   State<AccountsDropdown> createState() => _AccountsDropdownState();
@@ -33,6 +34,7 @@ class _AccountsDropdownState extends State<AccountsDropdown> {
               setState(() {
                 selectedCuenta = cta;
               });
+              widget.onSelected?.call(cta);
             },
           );
         }
