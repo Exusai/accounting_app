@@ -1,10 +1,12 @@
 import 'package:accounting_app/domain/request_response/get_estado_de_cuentas_request.dart';
+import 'package:accounting_app/presentation/bloc/conceptos/conceptos_bloc.dart';
 import 'package:accounting_app/presentation/bloc/cuentas/cuentas_bloc.dart';
 import 'package:accounting_app/presentation/bloc/get_estado_de_cuenta/get_estado_de_cuenta_bloc.dart';
 import 'package:accounting_app/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:accounting_app/presentation/views/accounts_overview/accounts_overview.dart';
 import 'package:accounting_app/presentation/views/insert_data/insert_data.dart';
 import 'package:accounting_app/presentation/views/sheet/sheet.dart';
+import 'package:accounting_app/presentation/views/target_presupuesto/target_presupuesto.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -25,8 +27,8 @@ class Home extends StatelessWidget {
               )
             )
           );
-
           BlocProvider.of<CuentasBloc>(context).getAccounts();
+          BlocProvider.of<ConceptosBloc>(context).getConcepts();
         }
       },
       child: Row(
@@ -45,6 +47,8 @@ class Home extends StatelessWidget {
               child: Column(
                 children: [
                   AccountsOverview(),
+                  Divider(),
+                  TargetPresupuesto()
                 ],
               ),
             ),
