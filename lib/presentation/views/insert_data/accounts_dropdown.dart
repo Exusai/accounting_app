@@ -36,6 +36,7 @@ class _AccountsDropdownState extends State<AccountsDropdown> {
               });
               widget.onSelected?.call(cta);
             },
+            isDense: true,
           );
         }
         return Center(child: Text("Error"),);

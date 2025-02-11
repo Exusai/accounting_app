@@ -48,7 +48,7 @@ class SheetLoaded extends StatelessWidget {
           DataColumn(label: Text("Concepto")),
           DataColumn(label: Text("Monto"), numeric: true),
           DataColumn(label: Text("Cuenta")),
-          DataColumn(label: Text("Saldo cuenta"), numeric: true),
+          DataColumn(label: Flexible(child: Text("Saldo cuenta")), numeric: false),
           DataColumn(label: Text("Total"), numeric: true),
           DataColumn(label: Text("Deuda total"), numeric: true),
         ],

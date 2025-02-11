@@ -11,11 +11,13 @@ class AccountsOverviewLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    getAccountsResponse.cuenta.sort((a,b) => b.saldo.compareTo(a.saldo));
+
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: List<Widget>.from(
-        getAccountsResponse.cuenta.map((x) => Row(
+         getAccountsResponse.cuenta.map((x) => Row(
           children: [
             Text(x.nombreCuenta),
             Spacer(),

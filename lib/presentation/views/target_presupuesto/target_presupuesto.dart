@@ -1,7 +1,7 @@
 import 'package:accounting_app/domain/model/resumen_estado_cuenta.dart';
 import 'package:accounting_app/presentation/bloc/conceptos/conceptos_bloc.dart';
 import 'package:accounting_app/presentation/bloc/get_estado_de_cuenta/get_estado_de_cuenta_bloc.dart';
-import 'package:accounting_app/presentation/views/target_presupuesto/target_presupuesto_only_text.dart';
+import 'package:accounting_app/presentation/views/target_presupuesto/target_presupuesto_gages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,7 +36,7 @@ class TargetPresupuesto extends StatelessWidget {
             }
 
             if (state is ConceptosLoaded) {
-              return TargetPresupuestoOnlyText(
+              return TargetPresupuestoGages(
                 getConceptsResponse: state.getConceptsResponse,
                 sumaConceptos: sum,
               );

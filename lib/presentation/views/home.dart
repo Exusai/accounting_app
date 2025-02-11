@@ -44,12 +44,14 @@ class Home extends StatelessWidget {
             flex: 2,
             child: Padding(
               padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  AccountsOverview(),
-                  Divider(),
-                  TargetPresupuesto()
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    AccountsOverview(),
+                    Divider(),
+                    TargetPresupuesto()
+                  ],
+                ),
               ),
             ),
           )
