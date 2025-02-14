@@ -36,7 +36,7 @@ class _ConceptsDropdownState extends State<ConceptsDropdown> {
               });
               widget.onSelected?.call(cons);
             },
-            isDense: true,
+            isDense: false,
           );
         }
         return Center(child: Text("Error"),);

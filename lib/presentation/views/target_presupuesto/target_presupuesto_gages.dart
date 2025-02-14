@@ -17,9 +17,10 @@ class TargetPresupuestoGages extends StatelessWidget {
     Concepto ingresos = getConceptsResponse.conceptos.firstWhere((element) => element.idConcepto == "1f1120e7-20ce-4e3d-8d7e-1cd656c45a2a",);
     double egresos = 0;
     sumaConceptos.forEach((key, value) {
-      egresos += value;
+      if(key != "Ingreso" && key != "Movimiento"){
+        egresos += value;
+      }
     },);
-
     return Column(
       children: [
         Text(
@@ -47,6 +48,7 @@ class TargetPresupuestoGages extends StatelessWidget {
             )
           ),
         ),
+        // TODO: agregar gastos principales del mes
         Divider(),
         ...getGages(),
       ],
