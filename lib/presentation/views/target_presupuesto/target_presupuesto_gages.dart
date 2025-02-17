@@ -57,42 +57,50 @@ class TargetPresupuestoGages extends StatelessWidget {
 
   List<Widget> getGages() {
     return List<Widget>.from(getConceptsResponse.conceptos.where((x) => x.presupuesto != 0 && x.nombreConcepto != "Ingreso").map((x) =>
-      Column(
-        children: [
-          Row(
-            children: [
-              Flexible(
-                child: Text(
-                  "${x.nombreConcepto}: ",
-                  maxLines: 1,
-                  overflow: TextOverflow.fade,
-                  softWrap: false,
-                )
+      Container(
+        decoration: x.nombreConcepto == "PPR" || x.nombreConcepto.contains("Ahorro") ? BoxDecoration(
+          border:  Border.all(
+            color: Colors.blue.withValues(alpha: .6),
+            width: 3
+          )
+        ) : null,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Flexible(
+                  child: Text(
+                    "${x.nombreConcepto}: ",
+                    maxLines: 1,
+                    overflow: TextOverflow.fade,
+                    softWrap: false,
+                  )
+                ),
+                Text(moneyNumberFormat.format(x.presupuesto)),
+                Text(moneyNumberFormat.format(sumaConceptos[x.nombreConcepto] ?? 0)),
+                Text(": "),
+                Text(moneyNumberFormat.format(x.presupuesto + (sumaConceptos[x.nombreConcepto] ?? 0)))
+              ],
+            ),
+            SliderTheme(
+              data: SliderThemeData(
+                trackHeight: 20,
               ),
-              Text(moneyNumberFormat.format(x.presupuesto)),
-              Text(moneyNumberFormat.format(sumaConceptos[x.nombreConcepto] ?? 0)),
-              Text(": "),
-              Text(moneyNumberFormat.format(x.presupuesto + (sumaConceptos[x.nombreConcepto] ?? 0)))
-            ],
-          ),
-          SliderTheme(
-            data: SliderThemeData(
-              trackHeight: 20,
+              child: Slider(
+                value: min(sumaConceptos[x.nombreConcepto]?.abs() ?? 0, x.presupuesto),
+                max: max(x.presupuesto, sumaConceptos[x.nombreConcepto]?.abs() ?? 0),
+                onChanged: (v){},
+                inactiveColor: x.presupuesto + (sumaConceptos[x.nombreConcepto] ?? 0) < 0 
+                  ? const Color.fromARGB(255, 141, 26, 26) : Colors.grey,
+                activeColor: x.presupuesto + (sumaConceptos[x.nombreConcepto] ?? 0) < 0 
+                  ? Colors.red : Colors.green,
+                thumbColor: x.presupuesto + (sumaConceptos[x.nombreConcepto] ?? 0) < 0 
+                  ? Colors.red : Colors.green,
+                allowedInteraction: SliderInteraction.tapOnly,                
+              ),
             ),
-            child: Slider(
-              value: min(sumaConceptos[x.nombreConcepto]?.abs() ?? 0, x.presupuesto),
-              max: max(x.presupuesto, sumaConceptos[x.nombreConcepto]?.abs() ?? 0),
-              onChanged: (v){},
-              inactiveColor: x.presupuesto + (sumaConceptos[x.nombreConcepto] ?? 0) < 0 
-                ? const Color.fromARGB(255, 141, 26, 26) : Colors.grey,
-              activeColor: x.presupuesto + (sumaConceptos[x.nombreConcepto] ?? 0) < 0 
-                ? Colors.red : Colors.green,
-              thumbColor: x.presupuesto + (sumaConceptos[x.nombreConcepto] ?? 0) < 0 
-                ? Colors.red : Colors.green,
-              allowedInteraction: SliderInteraction.tapOnly,                
-            ),
-          ),
-        ],
+          ],
+        ),
       )
     ));
   }
