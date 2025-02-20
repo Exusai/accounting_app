@@ -34,14 +34,15 @@ class TargetPresupuestoGages extends StatelessWidget {
                 PieChartSectionData(
                   color: Colors.green,
                   title: "",
-                  value: ingresos.presupuesto + egresos,
+                  value: (ingresos.presupuesto + egresos) > 0 ? (ingresos.presupuesto + egresos) : 0,
                   badgeWidget: Text(moneyNumberFormat.format(ingresos.presupuesto + egresos))
                 ),
                 PieChartSectionData(
                   color: Colors.red,
                   title: "",
                   value: egresos.abs(),
-                  badgeWidget: Text(moneyNumberFormat.format(egresos))
+                  badgeWidget: Text(moneyNumberFormat.format(egresos)),
+                  badgePositionPercentageOffset: 0
                 ),
 
               ]
