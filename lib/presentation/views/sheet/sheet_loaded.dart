@@ -35,7 +35,7 @@ class SheetLoaded extends StatelessWidget {
             Text(moneyNumberFormat.format(x.total))
           ),
           DataCell(
-            Text(moneyNumberFormat.format(x.deudaTotal))
+            Text(moneyNumberFormat.format(x.deudaTotal)),
           ),
         ]
       )))
@@ -53,6 +53,8 @@ class SheetLoaded extends StatelessWidget {
           DataColumn(label: Text("Deuda total"), numeric: true),
         ],
         rows: rows,
+        dataRowMinHeight: 15,
+        dataRowMaxHeight: 20,
       ),
     );
   }
