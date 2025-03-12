@@ -11,7 +11,7 @@ class AccountingRepo {
   Future<GetEstadoDeCuentasResponse> getEstadoDeCuentas(GetEstadoDeCuentasRequest getEstadoDeCuentasRequest) async {
     try {
       var response = await dio.get(
-        'http://ubuntu.local:8080/getResumenEstadoDeCuenta?startDate=${getEstadoDeCuentasRequest.startDate.toIso8601String()}&endDate=${getEstadoDeCuentasRequest.endDate.toIso8601String()}',
+        'http://localhost:8080/getResumenEstadoDeCuenta?startDate=${getEstadoDeCuentasRequest.startDate.toIso8601String()}&endDate=${getEstadoDeCuentasRequest.endDate.toIso8601String()}',
       );
       return GetEstadoDeCuentasResponse.fromJson(response.data);
     } on Exception catch (_) {
@@ -22,7 +22,7 @@ class AccountingRepo {
   Future<GetConceptsResponse> getConcepts() async {
     try {
       var response = await dio.get(
-        'http://ubuntu.local:8080/getConcepts',
+        'http://localhost:8080/getConcepts',
       );
       return GetConceptsResponse.fromJson(response.data);
     } on Exception catch (_) {
@@ -33,7 +33,7 @@ class AccountingRepo {
   Future<GetAccountsResponse> getAccounts() async {
     try {
       var response = await dio.get(
-        'http://ubuntu.local:8080/getAccounts',
+        'http://localhost:8080/getAccounts',
       );
       return GetAccountsResponse.fromJson(response.data);
     } on Exception catch (_) {
@@ -44,7 +44,7 @@ class AccountingRepo {
   Future<void> addTransaction(Transaccion transaccion) async {
     try {
       var _ = await dio.post(
-        'http://ubuntu.local:8080/insertarMovimientoEstadoCuenta',
+        'http://localhost:8080/insertarMovimientoEstadoCuenta',
         data: transaccion.toJson()
       );
     } on Exception catch (_) {
