@@ -1,4 +1,5 @@
 import 'package:accounting_app/domain/model/transaccion.dart';
+import 'package:accounting_app/presentation/bloc/get_estado_de_cuenta/get_estado_de_cuenta_bloc.dart';
 import 'package:accounting_app/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:accounting_app/presentation/views/insert_data/accounts_dropdown.dart';
 import 'package:accounting_app/presentation/views/insert_data/concepts_dropdown.dart';
@@ -70,7 +71,9 @@ class _InsertDataState extends State<InsertData> with RestorationMixin {
           restorationId: 'date_picker_dialog',
           initialEntryMode: DatePickerEntryMode.calendarOnly,
           initialDate: DateTime.fromMillisecondsSinceEpoch(arguments! as int),
-          firstDate: DateTime(DateTime.now().year-1),
+          firstDate: (BlocProvider.of<GetEstadoDeCuentaBloc>(context).state is GetEstadoDeCuentaLoaded)
+            ? (BlocProvider.of<GetEstadoDeCuentaBloc>(context).state as GetEstadoDeCuentaLoaded).getEstadoDeCuentasResponse.estadoDecuenta.last.fecha
+            : DateTime(DateTime.now().year-1),
           lastDate: DateTime(DateTime.now().year+1),
         );
       },

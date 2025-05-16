@@ -10,15 +10,21 @@ import 'package:accounting_app/presentation/views/target_presupuesto/target_pres
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   const Home({super.key});
 
   @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
+  int monthSum = 0;
+  @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
     return BlocListener<TransactionBloc, TransactionState>(
       listener: (context, state) {
         if (state is TransactionLoaded){
-          DateTime now = DateTime.now();
           BlocProvider.of<GetEstadoDeCuentaBloc>(context).add(
             GetEstadoDeCuentaForDate(
               getEstadoDeCuentasRequest: GetEstadoDeCuentasRequest(
@@ -27,8 +33,6 @@ class Home extends StatelessWidget {
               )
             )
           );
-          BlocProvider.of<CuentasBloc>(context).getAccounts();
-          BlocProvider.of<ConceptosBloc>(context).getConcepts();
         }
       },
       child: Row(
@@ -48,6 +52,41 @@ class Home extends StatelessWidget {
                 child: Column(
                   children: [
                     AccountsOverview(),
+                    Divider(),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          onPressed: (){
+                            monthSum = monthSum - 1;
+                            BlocProvider.of<GetEstadoDeCuentaBloc>(context).add(
+                              GetEstadoDeCuentaForDate(
+                                getEstadoDeCuentasRequest: GetEstadoDeCuentasRequest(
+                                  startDate: DateTime(now.year, now.month + monthSum, 1),
+                                  endDate: DateTime(now.year, now.month + monthSum + 1, 1),
+                                )
+                              )
+                            );
+                          }, 
+                          child: Icon(Icons.arrow_back_ios),
+                        ),
+                        Text("Time travel"),
+                        ElevatedButton(
+                          onPressed: (){
+                            monthSum = monthSum + 1;
+                            BlocProvider.of<GetEstadoDeCuentaBloc>(context).add(
+                              GetEstadoDeCuentaForDate(
+                                getEstadoDeCuentasRequest: GetEstadoDeCuentasRequest(
+                                  startDate: DateTime(now.year, now.month + monthSum, 1),
+                                  endDate: DateTime(now.year, now.month + monthSum + 1, 1),
+                                )
+                              )
+                            );
+                          }, 
+                          child: Icon(Icons.arrow_forward_ios),
+                        ),
+                      ],
+                    ),
                     Divider(),
                     TargetPresupuesto()
                   ],

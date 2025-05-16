@@ -10,9 +10,9 @@ class TargetPresupuesto extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Map<String, double> sum = {};
     return BlocBuilder<GetEstadoDeCuentaBloc, GetEstadoDeCuentaState>(
       builder: (context, state1) {
+        Map<String, double> sum = {};
         if (state1 is GetEstadoDeCuentaLoaded){
           for (ResumenEstadoCuenta x in state1.getEstadoDeCuentasResponse.estadoDecuenta){
             if (!sum.containsKey(x.nombreConcepto)){

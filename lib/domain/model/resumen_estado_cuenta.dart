@@ -13,6 +13,7 @@ class ResumenEstadoCuenta {
     required this.nombreCuenta,
     required this.saldoCuentaTransaccion,
     required this.total,
+    this.visible = true,
   });
 
   final DateTime fecha;
@@ -23,6 +24,8 @@ class ResumenEstadoCuenta {
   final double saldoCuentaTransaccion;
   final double total;
   final double deudaTotal;
+
+  bool visible;
 
   factory ResumenEstadoCuenta.fromJson(Map<String, dynamic> json) => _$ResumenEstadoCuentaFromJson(json);
 

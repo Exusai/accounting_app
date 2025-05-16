@@ -17,7 +17,7 @@ class TargetPresupuestoGages extends StatelessWidget {
     Concepto ingresos = getConceptsResponse.conceptos.firstWhere((element) => element.idConcepto == "1f1120e7-20ce-4e3d-8d7e-1cd656c45a2a",);
     double egresos = 0;
     sumaConceptos.forEach((key, value) {
-      if(key != "Ingreso" && key != "Movimiento"){
+      if(key != "Ingreso" && key != "Movimiento" && key != "Ahorro casa" && key != "Ahorro vacaciones"){
         egresos += value;
       }
     },);
