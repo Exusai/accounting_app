@@ -1,5 +1,7 @@
 import 'package:accounting_app/domain/request_response/get_estado_de_cuentas_response.dart';
+import 'package:accounting_app/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 class SheetLoaded extends StatefulWidget {
@@ -25,6 +27,36 @@ class _SheetLoadedState extends State<SheetLoaded> {
   Widget build(BuildContext context) {
     List<DataRow> rows = List<DataRow>.from(
       edoCta.estadoDecuenta.where((a) => a.visible).map(((x) => DataRow(
+        onLongPress: (){
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text("Eliminar"),
+                content: Text("Deseas borrar el último movimiento?"),
+                actions: [
+                  TextButton(
+                    onPressed: (){
+                      Navigator.of(context).pop();
+                    }, 
+                    child: Text("Cancelar")
+                  ),
+                  TextButton(
+                    onPressed: (){
+                      BlocProvider.of<TransactionBloc>(context).add(
+                        DeleteLastTransaction()
+                      );
+                      Navigator.of(context).pop();
+                    }, 
+                    child: Text("Si")
+                  ),
+                ],
+              );
+
+            },
+          );
+
+        },
         cells: [
           DataCell(
             Text(SheetLoaded.dateFormat.format(x.fecha))

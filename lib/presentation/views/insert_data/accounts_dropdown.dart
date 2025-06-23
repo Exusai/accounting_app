@@ -16,7 +16,14 @@ class _AccountsDropdownState extends State<AccountsDropdown> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<CuentasBloc, CuentasState>(
+    return BlocConsumer<CuentasBloc, CuentasState>(
+      listener: (context, state) {
+        if (state is CuentasLoading){
+          setState(() {
+            selectedCuenta = null;
+          });
+        }
+      },
       builder: (context, state) {
         if (state is CuentasLoading){
           return Center(

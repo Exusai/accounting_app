@@ -10,3 +10,5 @@ class NewTransaction extends TransactionEvent {
     required this.transaccion
   });
 }
+
+class DeleteLastTransaction extends TransactionEvent {}
