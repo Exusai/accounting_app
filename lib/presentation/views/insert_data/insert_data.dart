@@ -72,7 +72,9 @@ class _InsertDataState extends State<InsertData> with RestorationMixin {
           initialEntryMode: DatePickerEntryMode.calendarOnly,
           initialDate: DateTime.fromMillisecondsSinceEpoch(arguments! as int),
           firstDate: (BlocProvider.of<GetEstadoDeCuentaBloc>(context).state is GetEstadoDeCuentaLoaded)
-            ? (BlocProvider.of<GetEstadoDeCuentaBloc>(context).state as GetEstadoDeCuentaLoaded).getEstadoDeCuentasResponse.estadoDecuenta.last.fecha
+            ? (BlocProvider.of<GetEstadoDeCuentaBloc>(context).state as GetEstadoDeCuentaLoaded).getEstadoDeCuentasResponse.estadoDecuenta.isNotEmpty 
+              ? (BlocProvider.of<GetEstadoDeCuentaBloc>(context).state as GetEstadoDeCuentaLoaded).getEstadoDeCuentasResponse.estadoDecuenta.last.fecha
+              : DateTime(DateTime.now().year, DateTime.now().month, 1)
             : DateTime(DateTime.now().year-1),
           lastDate: DateTime(DateTime.now().year+1),
         );
