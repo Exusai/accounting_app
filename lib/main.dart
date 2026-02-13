@@ -42,6 +42,7 @@ class MainApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+        title: "Accounting",
         theme: AppTheme.lightTheme,
         darkTheme: AppTheme.darkTheme,
         themeMode: ThemeMode.system,
