@@ -1,9 +1,11 @@
+import 'package:accounting_app/presentation/bloc/get_estado_de_cuenta/get_estado_de_cuenta_bloc.dart';
 import 'package:accounting_app/presentation/views/dashboard/dashboard_view.dart';
 import 'package:accounting_app/presentation/views/settings/settings_view.dart';
 // import 'package:accounting_app/presentation/views/transactions/transactions_view.dart';
 import 'package:accounting_app/presentation/views/insert_data/insert_data_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:accounting_app/l10n/app_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -23,6 +25,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
+
+    final state = BlocProvider.of<GetEstadoDeCuentaBloc>(context).state;
+    DateTime initialDate = DateTime.now();
+    if (state is GetEstadoDeCuentaLoaded){
+      initialDate = state.getEstadoDeCuentasResponse.estadoDecuenta.first.fecha;
+    }
 
     return LayoutBuilder(
       builder: (context, constraints) {
@@ -54,7 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
               onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => const InsertDataDialog(),
+                  builder: (context) => InsertDataDialog(
+                    lastTransactionDate: initialDate,
+                  ),
                 );
               },
               child: const Icon(Icons.add),
@@ -96,7 +106,9 @@ class _HomeScreenState extends State<HomeScreen> {
                onPressed: () {
                 showDialog(
                   context: context,
-                  builder: (context) => const InsertDataDialog(),
+                  builder: (context) => InsertDataDialog(
+                    lastTransactionDate: initialDate,
+                  ),
                 );
               },
               tooltip: l10n.addTransaction,

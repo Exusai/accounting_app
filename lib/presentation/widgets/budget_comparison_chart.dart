@@ -12,6 +12,21 @@ class BudgetComparisonChart extends StatelessWidget {
     required this.actualSpending,
   });
 
+  Color actualColorFunc(double actual, double budget, String name) {
+    Color color = Colors.green;
+    if (actual > budget && !_isSavingsOrCreditOrInvestment(name)) {
+      return Colors.red;
+    }
+    return color;
+  }
+
+  bool _isSavingsOrCreditOrInvestment(String name) {
+    final lowerName = name.toLowerCase();
+    return lowerName.contains('ahorro') ||
+        lowerName.contains('crédito') ||
+        lowerName.contains('ppr');
+  }
+
   @override
   Widget build(BuildContext context) {
     // Filter out conceptos with zero budget, "Ingreso", and sort by budget descending
@@ -43,14 +58,14 @@ class BudgetComparisonChart extends StatelessWidget {
               children: validConceptos.map((concepto) {
                 final actual = actualSpending[concepto.nombreConcepto] ?? 0;
                 final budget = concepto.presupuesto;
-                final actualColor = actual > budget ? Colors.red : Colors.green;
+                final actualColor = actualColorFunc(actual, budget, concepto.nombreConcepto);
 
                 return _buildVerticalSliderItem(
                   context,
                   concepto.nombreConcepto,
                   budget,
                   actual,
-                  budget,
+                  actual > budget ? actual : budget,
                   actualColor,
                 );
               }).toList(),
@@ -150,7 +165,7 @@ class BudgetComparisonChart extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                               fontWeight: FontWeight.w500,
                               fontSize: 10,
-                              color: actual > budget ? Colors.red : null,
+                              color: actual > budget && !_isSavingsOrCreditOrInvestment(name) ? Colors.red : null,
                             ),
                       ),
                     ),

@@ -203,7 +203,7 @@ class _DashboardViewState extends State<DashboardView> {
                                                       NumberFormat.currency(symbol: '\$').format(account.saldo),
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.bold,
-                                                        color: account.saldo >= 0 ? Colors.green : Colors.red,
+                                                        color: account.saldo > -1 ? Colors.green : Colors.red,
                                                       ),
                                                     ),
                                                   ),
@@ -341,25 +341,56 @@ class _DashboardViewState extends State<DashboardView> {
                                   DataColumn(label: Text(l10n.totalDebt), numeric: true),
                                 ],
                                 rows: transactions.map((tx) {
-                                  return DataRow(cells: [
-                                    DataCell(Text(DateFormat('dd/MM/yyyy').format(tx.fecha))),
-                                    DataCell(Text(tx.nombre)),
-                                    DataCell(Text(tx.nombreConcepto)),
-                                    DataCell(
-                                      Text(
-                                        NumberFormat.currency(symbol: '\$').format(tx.monto),
-                                        style: TextStyle(
-                                          color: tx.monto < 0
-                                              ? Theme.of(context).colorScheme.error
-                                              : Theme.of(context).colorScheme.primary,
+                                  return DataRow(
+                                    onLongPress: () {
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: Text("Eliminar"),
+                                            content: Text("Deseas borrar el último movimiento?"),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: (){
+                                                  Navigator.of(context).pop();
+                                                }, 
+                                                child: Text("Cancelar")
+                                              ),
+                                              TextButton(
+                                                onPressed: (){
+                                                  BlocProvider.of<TransactionBloc>(context).add(
+                                                    DeleteLastTransaction()
+                                                  );
+                                                  Navigator.of(context).pop();
+                                                }, 
+                                                child: Text("Si")
+                                              ),
+                                            ],
+                                          );
+
+                                        },
+                                      );
+                                    },
+                                    cells: [
+                                      DataCell(Text(DateFormat('dd/MM/yyyy').format(tx.fecha))),
+                                      DataCell(Text(tx.nombre)),
+                                      DataCell(Text(tx.nombreConcepto)),
+                                      DataCell(
+                                        Text(
+                                          NumberFormat.currency(symbol: '\$').format(tx.monto),
+                                          style: TextStyle(
+                                            color: tx.monto < 0
+                                                ? Theme.of(context).colorScheme.error
+                                                : Theme.of(context).colorScheme.primary,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    DataCell(Text(tx.nombreCuenta)),
-                                    DataCell(Text(NumberFormat.currency(symbol: '\$').format(tx.saldoCuentaTransaccion))),
-                                    DataCell(Text(NumberFormat.currency(symbol: '\$').format(tx.total))),
-                                    DataCell(Text(NumberFormat.currency(symbol: '\$').format(tx.deudaTotal))),
-                                  ]);
+                                      DataCell(Text(tx.nombreCuenta)),
+                                      DataCell(Text(NumberFormat.currency(symbol: '\$').format(tx.saldoCuentaTransaccion))),
+                                      DataCell(Text(NumberFormat.currency(symbol: '\$').format(tx.total))),
+                                      DataCell(Text(NumberFormat.currency(symbol: '\$').format(tx.deudaTotal))),
+                                    ]
+                                  );
                                 }).toList(),
                               ),
                             ),

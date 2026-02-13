@@ -1,5 +1,4 @@
 import 'package:accounting_app/domain/model/transaccion.dart';
-import 'package:accounting_app/presentation/bloc/get_estado_de_cuenta/get_estado_de_cuenta_bloc.dart';
 import 'package:accounting_app/presentation/bloc/transaction/transaction_bloc.dart';
 import 'package:accounting_app/presentation/views/insert_data/accounts_dropdown.dart';
 import 'package:accounting_app/presentation/views/insert_data/concepts_dropdown.dart';
@@ -10,7 +9,8 @@ import 'package:intl/intl.dart';
 import 'package:accounting_app/l10n/app_localizations.dart';
 
 class InsertDataDialog extends StatefulWidget {
-  const InsertDataDialog({super.key});
+  final DateTime lastTransactionDate;
+  const InsertDataDialog({super.key, required this.lastTransactionDate});
 
   @override
   State<InsertDataDialog> createState() => _InsertDataDialogState();
@@ -114,7 +114,7 @@ class _InsertDataDialogState extends State<InsertDataDialog> {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: DateTime(2000),
+      firstDate: widget.lastTransactionDate,
       lastDate: DateTime(2101),
     );
     if (picked != null && picked != _selectedDate) {
