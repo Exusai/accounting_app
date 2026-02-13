@@ -3,7 +3,9 @@ import 'package:accounting_app/presentation/bloc/conceptos/conceptos_bloc.dart';
 import 'package:accounting_app/presentation/bloc/cuentas/cuentas_bloc.dart';
 import 'package:accounting_app/presentation/bloc/get_estado_de_cuenta/get_estado_de_cuenta_bloc.dart';
 import 'package:accounting_app/presentation/bloc/transaction/transaction_bloc.dart';
-import 'package:accounting_app/presentation/views/home.dart';
+import 'package:accounting_app/presentation/views/home/home_screen.dart';
+import 'package:accounting_app/presentation/theme/app_theme.dart';
+import 'package:accounting_app/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,11 +40,14 @@ class MainApp extends StatelessWidget {
 
         BlocProvider(create: (context) => TransactionBloc()),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: Home(),
-        ),
+        theme: AppTheme.lightTheme,
+        darkTheme: AppTheme.darkTheme,
+        themeMode: ThemeMode.system,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: const HomeScreen(),
       ),
     );
   }

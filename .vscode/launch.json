@@ -6,14 +6,15 @@
     "configurations": [
 
 
+
         {
             "name": "accounting_app",
             "request": "launch",
             "type": "dart",
-            /* "args" :[
-                "--web-browser-flag",
-                "--disable-web-security"
-            ] */
+            "args" :[
+                /* "--web-browser-flag",
+                "--disable-web-security" */
+            ]
         },
         {
             "name": "accounting_app (profile mode)",
