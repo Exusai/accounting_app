@@ -127,14 +127,13 @@ class _InsertDataDialogState extends State<InsertDataDialog> {
   void _submit() {
     if (_formKey.currentState!.validate() && idCuenta != null && idConcepto != null) {
       _formKey.currentState!.save();
-      final now = DateTime.now();
       final transactionDate = DateTime(
         _selectedDate.year,
         _selectedDate.month,
         _selectedDate.day,
-        now.hour,
-        now.minute,
-        now.second,
+        widget.lastTransactionDate.hour,
+        widget.lastTransactionDate.minute,
+        widget.lastTransactionDate.second + 1, // Ensure new transaction is after the last one
       );
 
       BlocProvider.of<TransactionBloc>(context).add(

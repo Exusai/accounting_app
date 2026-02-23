@@ -16,6 +16,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
+  DateTime initialDate = DateTime.now();
 
   final List<Widget> _screens = const [
     DashboardView(),
@@ -26,97 +27,100 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
 
-    final state = BlocProvider.of<GetEstadoDeCuentaBloc>(context).state;
-    DateTime initialDate = DateTime.now();
-    if (state is GetEstadoDeCuentaLoaded){
-      initialDate = state.getEstadoDeCuentasResponse.estadoDecuenta.first.fecha;
-    }
-
-    return LayoutBuilder(
-      builder: (context, constraints) {
-        if (constraints.maxWidth < 600) {
-          // Mobile Layout
-          return Scaffold(
-            body: _screens[_selectedIndex],
-            bottomNavigationBar: NavigationBar(
-              selectedIndex: _selectedIndex,
-              onDestinationSelected: (value) {
-                setState(() {
-                  _selectedIndex = value;
-                });
-              },
-              destinations: [
-                NavigationDestination(
-                  icon: const Icon(Icons.dashboard_outlined),
-                  selectedIcon: const Icon(Icons.dashboard),
-                  label: l10n.dashboard,
-                ),
-                NavigationDestination(
-                  icon: const Icon(Icons.settings_outlined),
-                  selectedIcon: const Icon(Icons.settings),
-                  label: l10n.settings,
-                ),
-              ],
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => InsertDataDialog(
-                    lastTransactionDate: initialDate,
-                  ),
-                );
-              },
-              child: const Icon(Icons.add),
-            ),
-          );
-        } else {
-          // Desktop / Tablet Layout
-          return Scaffold(
-            body: Row(
-              children: [
-                NavigationRail(
-                  selectedIndex: _selectedIndex,
-                  onDestinationSelected: (value) {
-                    setState(() {
-                      _selectedIndex = value;
-                    });
-                  },
-                  labelType: NavigationRailLabelType.all,
-                  destinations: [
-                    NavigationRailDestination(
-                      icon: const Icon(Icons.dashboard_outlined),
-                      selectedIcon: const Icon(Icons.dashboard),
-                      label: Text(l10n.dashboard),
-                    ),
-                    NavigationRailDestination(
-                      icon: const Icon(Icons.settings_outlined),
-                      selectedIcon: const Icon(Icons.settings),
-                      label: Text(l10n.settings),
-                    ),
-                  ],
-                ),
-                const VerticalDivider(thickness: 1, width: 1),
-                Expanded(
-                  child: _screens[_selectedIndex],
-                ),
-              ],
-            ),
-            floatingActionButton: FloatingActionButton(
-               onPressed: () {
-                showDialog(
-                  context: context,
-                  builder: (context) => InsertDataDialog(
-                    lastTransactionDate: initialDate,
-                  ),
-                );
-              },
-              tooltip: l10n.addTransaction,
-              child: const Icon(Icons.add),
-            ),
-          );
+    return BlocListener<GetEstadoDeCuentaBloc, GetEstadoDeCuentaState>(
+      listener: (context, state) {
+        if (state is GetEstadoDeCuentaLoaded) {
+          setState(() {
+            initialDate = state.getEstadoDeCuentasResponse.estadoDecuenta.last.fecha;
+          });
         }
       },
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          if (constraints.maxWidth < 600) {
+            // Mobile Layout
+            return Scaffold(
+              body: _screens[_selectedIndex],
+              bottomNavigationBar: NavigationBar(
+                selectedIndex: _selectedIndex,
+                onDestinationSelected: (value) {
+                  setState(() {
+                    _selectedIndex = value;
+                  });
+                },
+                destinations: [
+                  NavigationDestination(
+                    icon: const Icon(Icons.dashboard_outlined),
+                    selectedIcon: const Icon(Icons.dashboard),
+                    label: l10n.dashboard,
+                  ),
+                  NavigationDestination(
+                    icon: const Icon(Icons.settings_outlined),
+                    selectedIcon: const Icon(Icons.settings),
+                    label: l10n.settings,
+                  ),
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => InsertDataDialog(
+                      lastTransactionDate: initialDate,
+                    ),
+                  );
+                },
+                child: const Icon(Icons.add),
+              ),
+            );
+          } else {
+            // Desktop / Tablet Layout
+            return Scaffold(
+              body: Row(
+                children: [
+                  NavigationRail(
+                    selectedIndex: _selectedIndex,
+                    onDestinationSelected: (value) {
+                      setState(() {
+                        _selectedIndex = value;
+                      });
+                    },
+                    labelType: NavigationRailLabelType.all,
+                    destinations: [
+                      NavigationRailDestination(
+                        icon: const Icon(Icons.dashboard_outlined),
+                        selectedIcon: const Icon(Icons.dashboard),
+                        label: Text(l10n.dashboard),
+                      ),
+                      NavigationRailDestination(
+                        icon: const Icon(Icons.settings_outlined),
+                        selectedIcon: const Icon(Icons.settings),
+                        label: Text(l10n.settings),
+                      ),
+                    ],
+                  ),
+                  const VerticalDivider(thickness: 1, width: 1),
+                  Expanded(
+                    child: _screens[_selectedIndex],
+                  ),
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => InsertDataDialog(
+                      lastTransactionDate: initialDate,
+                    ),
+                  );
+                },
+                tooltip: l10n.addTransaction,
+                child: const Icon(Icons.add),
+              ),
+            );
+          }
+        },
+      ),
     );
   }
 }
